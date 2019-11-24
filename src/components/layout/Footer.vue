@@ -5,12 +5,12 @@
       <a class="return-top" title="返回顶部" @click="returnTop"></a>
       <img src="@/assets/images/home/ewm.jpg" />
       <div class="footer-box-text">
-        <p>宽仁妇孺照护中心·沙坪坝店</p>
-        <p>Add：重庆市沙坪坝区凤天大道136号凤鸣广场商业裙楼4F</p>
-        <p class="hr">Tel：023-65309088</p>
-        <p class="pt">宽仁妇孺照护中心·解放碑店</p>
-        <p>Add：重庆市渝中区嘉滨路112号高盛创富B栋3-4F</p>
-        <p>Tel：023-88316333</p>
+        <p>{{ storeName1 }}</p>
+        <p>Add：{{ addresss1 }}</p>
+        <p class="hr">Tel：{{ phone1 }}</p>
+        <p class="pt">{{ storeName2 }}</p>
+        <p>Add：{{ addresss2 }}</p>
+        <p>Tel：{{ phone2 }}</p>
       </div>
     </div>
   </footer>
@@ -21,10 +21,30 @@
     name: 'Foorer',
     data() {
       return {
-
+        storeName1: '',
+        addresss1: '',
+        phone1: '',
+        storeName2: '',
+        addresss2: '',
+        phone2: ''
       }
     },
+    created() {
+      this.init();
+    },
     methods: {
+      init() {
+        this.$axios.get('/app/footer').then(res => {
+          if (res.data) {
+            this.storeName1 = res.data.home.storeName1;
+            this.addresss1 = res.data.home.addresss1;
+            this.phone1 = res.data.home.phone1;
+            this.storeName2 = res.data.home.storeName2;
+            this.addresss2 = res.data.home.addresss2;
+            this.phone2 = res.data.home.phone2;
+          }
+        })
+      },
       returnTop() {
         document.body.scrollTop = document.documentElement.scrollTop = 0;
       }

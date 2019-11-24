@@ -4,7 +4,16 @@ module.exports = {
   lintOnSave: false,
   devServer: {
     port: '8088',
-    open: false
+    open: false,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': '/kuanrf'
+        }
+      }
+    }
   },
   css: {
     loaderOptions: {

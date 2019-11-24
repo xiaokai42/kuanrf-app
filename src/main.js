@@ -12,6 +12,7 @@ Vue.config.productionTip = false
 Vue.use(ElementUI, { size: 'small' })
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
 axios.defaults.timeout = 20000
+axios.defaults.baseURL = '/api'
 Vue.prototype.$axios = axios
 Vue.prototype.$qs = qs
 

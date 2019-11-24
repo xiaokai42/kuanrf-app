@@ -1,14 +1,14 @@
 <template>
   <div class="active">
-    <img src="@/assets/images/home/banner2.jpg" class="banner" />
+    <img :src="imgUrl" class="banner" />
     <div class="active-content">
       <img src="@/assets/images/home/font-kuanrf1.png" class="font" />
       <div class="active-text">
-        <h1>母婴照护优惠</h1>
-        <p>母婴照护优惠母婴照护优惠母婴照护优惠母婴照护优惠母婴照护优惠母婴照护优惠母婴照护优惠</p>
-        <div class="hr"></div>
-        <h1>母婴照护优惠</h1>
-        <p>母婴照护优惠母婴照护优惠母婴照护优惠母婴照护优惠母婴照护优惠母婴照护优惠母婴照护优惠</p>
+        <section v-for="(item, index) in list">
+          <div class="hr" v-if="index != 0"></div>
+          <h1>{{ item.title }}</h1>
+          <p>{{ item.txt }}</p>
+        </section>
       </div>
     </div>
   </div>
@@ -19,11 +19,42 @@ export default {
   name: 'Active',
   data() {
     return {
-
+      imgUrl: '',
+      list: []
     }
   },
+  created() {
+    this.init();
+    this.activeData();
+  },
   methods: {
+    init() {
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
 
+      this.$axios.get('/app/index').then(res => {
+        if (res.data) {
+          this.ajaxImg(res.data.app.bannerImg1);
+        }
+      })
+    },
+    activeData() {
+      this.$axios.get('/app/active').then(res => {
+        if (res.status == 200) {
+          this.list = res.data.list;
+        }
+      }).catch(err => {
+        this.$Message.error({ content: '数据请求失败' });
+      });
+    },
+    ajaxImg(id) {
+      this.$axios.get('/app/showPhoto?id=' + id).then(res => {
+        if (res.status == 200) {
+          this.imgUrl = 'data:image/png;base64,' + res.data.img64;
+        }
+      }).catch(err => {
+        this.$Message.error({ content: '图片加载失败' });
+      });
+    }
   }
 }
 </script>

@@ -1,27 +1,21 @@
 <template>
   <div class="recruit">
-    <img src="@/assets/images/home/banner1.jpg" class="banner" />
+    <img :src="imgUrl" class="banner" />
     <div class="recruit-content">
       <img src="@/assets/images/home/font-kuanrf.png" class="font" />
-      <div class="recruit-text">
+      <div class="recruit-text" v-for="item in list">
         <h1>【 招 聘 岗 位 】</h1>
-        <p class="work">· 护士（3000--5000元/月） </p>
+        <p class="work">· {{ item.work }}（{{ item.money }}） </p>
         <p>岗位要求：</p>
-        <p>· 有婴儿护理及产妇照顾经验者优先；</p>
-        <p>· 有妇产科或儿科护理一年以上工作经验者优先；</p>
-        <p>· 持护士证；·  喜欢照顾婴儿，有耐心、爱心及同理心；</p>
-        <p>· 热爱本职工作，求知欲强，热情积极， 善于沟通；</p>
-        <p>· 具有亲和力和团队精神，有上进心；</p>
+        <p v-for="(duty, index) in item.duty.split('-')">· {{ item.duty.split('-')[index] }}</p>
         <div class="hr"></div>
-        <p>· 持护士证；·  喜欢照顾婴儿，有耐心、爱心及同理心；</p>
-        <p>· 热爱本职工作，求知欲强，热情积极， 善于沟通；</p>
-        <p>· 具有亲和力和团队精神，有上进心；</p>
+        <p v-for="(welfare, index) in item.welfare.split('-')">· {{ item.welfare.split('-')[index] }}</p>
         <div class="hr"></div>
         <div class="link">
-          <span><img src="@/assets/images/home/icon1.png" class="person" />联系人：张老师</span>
+          <span><img src="@/assets/images/home/icon1.png" class="person" />联系人：{{ item.person }}</span>
           <span>
             <img src="@/assets/images/home/icon2.png" class="phone" />
-            <a href="tel:19942399767">19942399767</a>
+            <a href="tel:19942399767">{{ item.phone }}</a>
           </span>
         </div>
       </div>
@@ -34,15 +28,41 @@ export default {
   name: 'Recruit',
   data() {
     return {
-
+      imgUrl: '',
+      list: []
     }
   },
   created() {
     this.init();
+    this.workData();
   },
   methods: {
     init() {
       document.body.scrollTop = document.documentElement.scrollTop = 0;
+
+      this.$axios.get('/app/index').then(res => {
+        if (res.data) {
+          this.ajaxImg(res.data.app.bannerImg2);
+        }
+      })
+    },
+    workData() {
+      this.$axios.get('/app/recruit').then(res => {
+        if (res.status == 200) {
+          this.list = res.data.list;
+        }
+      }).catch(err => {
+        this.$Message.error({ content: '数据请求失败' });
+      });
+    },
+    ajaxImg(id) {
+      this.$axios.get('/app/showPhoto?id=' + id).then(res => {
+        if (res.status == 200) {
+          this.imgUrl = 'data:image/png;base64,' + res.data.img64;
+        }
+      }).catch(err => {
+        this.$Message.error({ content: '图片加载失败' });
+      });
     }
   }
 }
@@ -67,7 +87,7 @@ export default {
         height: 59px;
       }
       .recruit-text {
-        margin-top: 20px;
+        margin-top: 40px;
         text-align: left;
         padding: 20px 40px;
         border-top: 1px #b2b1b0 solid;
@@ -91,7 +111,9 @@ export default {
         }
         .link {
           display: flex;
+          padding: 0 20px;
           align-items: center;
+          box-sizing: border-box;
           justify-content: space-between;
 
           span {
