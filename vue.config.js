@@ -7,10 +7,10 @@ module.exports = {
     open: false,
     proxy: {
       '/api': {
-        target: 'http://localhost:8080',
+        target: 'http://www.kuanrf.com',
         changeOrigin: true,
         pathRewrite: {
-          '^/api': '/kuanrf'
+          '^/api': ''
         }
       }
     }
