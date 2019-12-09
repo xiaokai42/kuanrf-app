@@ -4,11 +4,8 @@
     <div class="active-content">
       <img src="@/assets/images/home/font-kuanrf1.png" class="font" />
       <div class="active-text">
-        <section v-for="(item, index) in list">
-          <div class="hr" v-if="index != 0"></div>
-          <h1>{{ item.title }}</h1>
-          <p>{{ item.txt }}</p>
-        </section>
+        <h1>{{ title }}</h1>
+        <p>{{ txt }}</p>
       </div>
     </div>
   </div>
@@ -20,12 +17,14 @@ export default {
   data() {
     return {
       imgUrl: '',
+      title: '',
+      txt: '',
       list: []
     }
   },
   created() {
     this.init();
-    this.activeData();
+    // this.activeData();
   },
   methods: {
     init() {
@@ -33,6 +32,8 @@ export default {
 
       this.$axios.get('/app/index').then(res => {
         if (res.data) {
+          this.txt = res.data.app.txt;
+          this.title = res.data.app.activeTitle;
           this.ajaxImg(res.data.app.bannerImg1);
         }
       })
