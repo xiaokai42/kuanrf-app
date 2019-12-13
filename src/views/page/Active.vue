@@ -5,7 +5,7 @@
       <img src="@/assets/images/home/font-kuanrf1.png" class="font" />
       <div class="active-text">
         <h1>{{ title }}</h1>
-        <p>{{ txt }}</p>
+        <p><pre>{{ txt }}</pre></p>
       </div>
     </div>
   </div>
@@ -79,21 +79,26 @@ export default {
         height: 59px;
       }
       .active-text {
-        margin-top: 20px;
+        width: 90%;
+        padding: 40px;
         text-align: left;
-        padding: 20px 40px;
+        margin: 40px auto;
+        box-sizing: border-box;
         border-top: 1px #b2b1b0 solid;
         border-bottom: 1px #b2b1b0 solid;
 
         h1 {
-          font-size: 22px;
+          color: #e52f5f;
+          font-size: 28px;
           text-align: center;
-          margin-bottom: 10px;
+          margin-bottom: 40px;
         }
         p {
+          color: #1e71c1;
+          font-weight: bold;
           font-size: 22px;
-          line-height: 36px;
-          text-indent: 44px;
+          line-height: 48px;
+          text-align: center;
         }
         .hr {
           width: 100%;
